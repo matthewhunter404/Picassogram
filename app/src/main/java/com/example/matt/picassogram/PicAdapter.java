@@ -3,6 +3,7 @@ package com.example.matt.picassogram;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -14,9 +15,11 @@ import com.squareup.picasso.Picasso;
  */
 public class PicAdapter extends BaseAdapter {
         private Context mContext;
+        private Integer[] mThumbIds;
 
-        public PicAdapter(Context c) {
+        public PicAdapter(Context c, Integer[] passedThumbIds) {
             mContext = c;
+            mThumbIds=passedThumbIds;
         }
 
         public int getCount() {
@@ -54,74 +57,7 @@ public class PicAdapter extends BaseAdapter {
             return imageView;
         }
 
-        // references to our images
-        private Integer[] mThumbIds = {
-                R.drawable.pic18s, R.drawable.pic3s,
-                R.drawable.pic4s, R.drawable.pic5s,
-                R.drawable.pic6s, R.drawable.pic7s,
-                R.drawable.pic8s, R.drawable.pic9s,
-                R.drawable.pic10s, R.drawable.pic11s,
-                R.drawable.pic12s, R.drawable.pic13s,
-                R.drawable.pic2s, R.drawable.pic14s,
-                R.drawable.pic16s, R.drawable.pic1s,
-                R.drawable.pic15s, R.drawable.pic17s,
-                R.drawable.pic18s, R.drawable.pic3s,
-                R.drawable.pic4s, R.drawable.pic5s,
-                R.drawable.pic6s, R.drawable.pic7s,
-                R.drawable.pic8s, R.drawable.pic9s,
-                R.drawable.pic10s, R.drawable.pic11s,
-                R.drawable.pic12s, R.drawable.pic13s,
-                R.drawable.pic2s, R.drawable.pic14s,
-                R.drawable.pic16s, R.drawable.pic1s,
-                R.drawable.pic15s, R.drawable.pic17s,
-        };
-    private Integer[] mThumbId = {
-            R.drawable.j1, R.drawable.j9,
-            R.drawable.j2, R.drawable.j10,
-            R.drawable.j3, R.drawable.j11,
-            R.drawable.j4, R.drawable.j12,
-            R.drawable.j5, R.drawable.j14,
-            R.drawable.j6, R.drawable.j13,
-            R.drawable.j7, R.drawable.j1,
-            R.drawable.j8, R.drawable.j2,
-            R.drawable.j9, R.drawable.j3,
-            R.drawable.j10, R.drawable.j4,
-            R.drawable.j11, R.drawable.j5,
-            R.drawable.j12, R.drawable.j6,
-            R.drawable.j13, R.drawable.j7,
-            R.drawable.j14, R.drawable.j8,
-            R.drawable.j1, R.drawable.j9,
-            R.drawable.j3, R.drawable.j10,
-            R.drawable.j4, R.drawable.j11,
-            R.drawable.j5, R.drawable.j12,
-            R.drawable.j6, R.drawable.j13,
-            R.drawable.j7, R.drawable.j14,
-            R.drawable.j8, R.drawable.j1
-    };
 
-    private Integer[] mThumbIdh = {
-            R.drawable.h1, R.drawable.h9,
-            R.drawable.h2, R.drawable.h10,
-            R.drawable.h3, R.drawable.h11,
-            R.drawable.h4, R.drawable.h12,
-            R.drawable.h5, R.drawable.h7,
-            R.drawable.h6, R.drawable.h8,
-            R.drawable.h7, R.drawable.h1,
-            R.drawable.h8, R.drawable.h2,
-            R.drawable.h9, R.drawable.h3,
-            R.drawable.h10, R.drawable.h4,
-            R.drawable.h11, R.drawable.h5,
-            R.drawable.h12, R.drawable.h6,
-            R.drawable.h10, R.drawable.h7,
-            R.drawable.h11, R.drawable.h8,
-            R.drawable.h1, R.drawable.h9,
-            R.drawable.h3, R.drawable.h10,
-            R.drawable.h4, R.drawable.h11,
-            R.drawable.h5, R.drawable.h12,
-            R.drawable.h6, R.drawable.h2,
-            R.drawable.h7, R.drawable.h1,
-            R.drawable.h8, R.drawable.h11
-    };
 
     }
 
