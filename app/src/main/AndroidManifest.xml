@@ -29,6 +29,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity
+            android:name=".GetComment"
+            android:label="@string/title_activity_get_comment"
+            android:parentActivityName=".ImageActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.matt.picassogram.ImageActivity" />
+        </activity>
     </application>
 
 </manifest>

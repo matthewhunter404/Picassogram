@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:screenOrientation="portrait"
+    android:background="@android:color/white">
 <ImageView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,17 +14,59 @@
         android:id="@+id/buttonlist"
         android:layout_below="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="66dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
         android:orientation="horizontal">
-        <android.support.v7.widget.ButtonBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </android.support.v7.widget.ButtonBarLayout>
+        <ImageButton
+            android:id="@+id/likebutton"
+            android:background="@android:color/white"
+            android:src="@drawable/ic_favorite_border_black_48dp"
+            android:layout_width="50dp"
+            android:paddingRight="8dp"
+            android:layout_height="match_parent" />
+        <ImageButton
+            android:id="@+id/commentbutton"
+            android:src="@drawable/ic_chat_bubble_outline_black_48dp"
+            android:background="@android:color/white"
+            android:layout_width="50dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:scaleType="fitCenter"
+            android:layout_height="match_parent" />
+        <ImageButton
+            android:id="@+id/sharebutton"
+            android:src="@drawable/ic_share_black_48dp"
+            android:background="@android:color/white"
+            android:layout_width="50dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_height="match_parent" />
     </LinearLayout>
-    <TextView
-        android:layout_below="@+id/buttonlist"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="1dp"
+        android:id="@+id/line"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@id/buttonlist"/>
+
+    <TextView
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
+        android:layout_below="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey_700"
         android:id="@+id/textview"/>
 
+    <FrameLayout
+        android:layout_below="@+id/textview"
+        android:id="@+id/fragmentForChange"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
 </RelativeLayout>

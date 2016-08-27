@@ -1,10 +1,12 @@
 package com.example.matt.picassogram;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,9 +20,14 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.ArrayList;
+import java.util.Random;
 
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private ArrayList<PicassoImage> mPicArray=new ArrayList<PicassoImage>();
+    private DatabaseHandler db;
+    private PicAdapter c;
+    private int picNumber=56;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,12 +36,25 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new PicAdapter(this,mThumbIds));
+        c=new PicAdapter(this, R.layout.gridpic_layout, mPicArray);
+        gridview.setAdapter(c);
+
+        db = new DatabaseHandler(this);
+        Log.d("PicassoCount",String.valueOf(db.getPicassoCount()));
+        if(db.getPicassoCount()<picNumber){
+            createNewPicassoImages(true);
+        }
+        else {
+            loadArrayListFromDatabase();
+        }
+        Log.d("PicassoCount", String.valueOf(db.getPicassoCount()));
+
+
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent image_intent = new Intent(MainActivity.this, ImageActivity.class);
-                image_intent.putExtra("image", mThumbIds[position]);
+                image_intent.putExtra("position", position);
                 MainActivity.this.startActivity(image_intent);
             }
         });
@@ -48,6 +68,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mPicArray.get(0).addComment("Moo");
+        mPicArray.get(0).addComment("Moo");
+        mPicArray.get(0).addComment("Even more Moo!");
+        db.updatePicasso(mPicArray.get(0));
     }
 
     @Override
@@ -72,14 +97,17 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        //int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                createNewPicassoImages(true);
+                return true;
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -109,71 +137,111 @@ public class MainActivity extends AppCompatActivity
 
 
     // references to our images
+
+
     private Integer[] mThumbIds = {
-            R.drawable.pic18s, R.drawable.pic3s,
-            R.drawable.pic4s, R.drawable.pic5s,
-            R.drawable.pic6s, R.drawable.pic7s,
-            R.drawable.pic8s, R.drawable.pic9s,
-            R.drawable.pic10s, R.drawable.pic11s,
-            R.drawable.pic12s, R.drawable.pic13s,
-            R.drawable.pic2s, R.drawable.pic14s,
-            R.drawable.pic16s, R.drawable.pic1s,
-            R.drawable.pic15s, R.drawable.pic17s,
-            R.drawable.pic18s, R.drawable.pic3s,
-            R.drawable.pic4s, R.drawable.pic5s,
-            R.drawable.pic6s, R.drawable.pic7s,
-            R.drawable.pic8s, R.drawable.pic9s,
-            R.drawable.pic10s, R.drawable.pic11s,
-            R.drawable.pic12s, R.drawable.pic13s,
-            R.drawable.pic2s, R.drawable.pic14s,
-            R.drawable.pic16s, R.drawable.pic1s,
-            R.drawable.pic15s, R.drawable.pic17s,
+            R.drawable.pic1s, R.drawable.pic2s,
+            R.drawable.pic3s, R.drawable.pic4s,
+            R.drawable.pic5s, R.drawable.pic6s,
+            R.drawable.pic7s, R.drawable.pic8s,
+            R.drawable.pic9s, R.drawable.pic10s,
+            R.drawable.pic11s, R.drawable.pic12s,
+            R.drawable.pic13s, R.drawable.pic14s,
+            R.drawable.pic15s, R.drawable.pic16s,
+            R.drawable.pic17s, R.drawable.pic18s,
+            R.drawable.h1, R.drawable.h2,
+            R.drawable.h3, R.drawable.h4,
+            R.drawable.h5, R.drawable.h6,
+            R.drawable.h7, R.drawable.h8,
+            R.drawable.h9, R.drawable.h10,
+            R.drawable.h11, R.drawable.h12,
+            R.drawable.h13, R.drawable.h14,
+            R.drawable.m1, R.drawable.m2,
+            R.drawable.m3, R.drawable.m4,
+            R.drawable.m5, R.drawable.m6,
+            R.drawable.m7, R.drawable.m8,
+            R.drawable.m9, R.drawable.m10,
+            R.drawable.m11, R.drawable.m12,
+            R.drawable.m13, R.drawable.m14,
+            R.drawable.m15, R.drawable.m16,
+            R.drawable.m17, R.drawable.m18,
+            R.drawable.m19, R.drawable.m20,
+            R.drawable.m21, R.drawable.m22,
+            R.drawable.m23, R.drawable.m24,
+
     };
-    private Integer[] mThumbId = {
-            R.drawable.j1, R.drawable.j9,
-            R.drawable.j2, R.drawable.j10,
-            R.drawable.j3, R.drawable.j11,
-            R.drawable.j4, R.drawable.j12,
-            R.drawable.j5, R.drawable.j14,
-            R.drawable.j6, R.drawable.j13,
-            R.drawable.j7, R.drawable.j1,
-            R.drawable.j8, R.drawable.j2,
-            R.drawable.j9, R.drawable.j3,
-            R.drawable.j10, R.drawable.j4,
-            R.drawable.j11, R.drawable.j5,
-            R.drawable.j12, R.drawable.j6,
-            R.drawable.j13, R.drawable.j7,
-            R.drawable.j14, R.drawable.j8,
-            R.drawable.j1, R.drawable.j9,
-            R.drawable.j3, R.drawable.j10,
-            R.drawable.j4, R.drawable.j11,
-            R.drawable.j5, R.drawable.j12,
-            R.drawable.j6, R.drawable.j13,
-            R.drawable.j7, R.drawable.j14,
-            R.drawable.j8, R.drawable.j1
+    private String[] mTexts = {
+            "Citysky", "Yummy!",
+            "Coffee", "Purple Lake",
+            "Blue Lake", "Lagoon",
+            "Pretty Sky", "Woodland",
+            "Forst Road", "Purple sky",
+            "Green tracks", "Breakfast",
+            "Super Burger", "Plane",
+            "Food", "Pink",
+            "Mountain", "Nutella",
+            "Sea Waves", "Rock pools",
+            "Meh","Sunset Sea",
+            "City Sunset","Expressions",
+            "Road to nowhere","Mountains",
+            "Above and below", "Arch",
+            "This is a car","Colours",
+            "Redhead","Girl",
+
+            "Puppy","Lake",
+            "Awesome Pizza", "Alpine",
+            "Yummy Burger","Corgi?",
+            "Rainbow cake","Blueberry Muffins",
+            "Waffles","Blossoms",
+            "Cute puppy", "Muffin",
+            "Cappuccino","Lagoon",
+            "Foxgloves","Autumn",
+            "Warm glow","Hilly road",
+            "Pyramids and camels", "Frozen landscape",
+            "Boats","Breakfast",
+            "Yummy","Pyramids",
+            "Snow heart","Paris",
+            "Venice","Chanel"
     };
 
-    private Integer[] mThumbIdh = {
-            R.drawable.h1, R.drawable.h9,
-            R.drawable.h2, R.drawable.h10,
-            R.drawable.h3, R.drawable.h11,
-            R.drawable.h4, R.drawable.h12,
-            R.drawable.h5, R.drawable.h7,
-            R.drawable.h6, R.drawable.h8,
-            R.drawable.h7, R.drawable.h1,
-            R.drawable.h8, R.drawable.h2,
-            R.drawable.h9, R.drawable.h3,
-            R.drawable.h10, R.drawable.h4,
-            R.drawable.h11, R.drawable.h5,
-            R.drawable.h12, R.drawable.h6,
-            R.drawable.h10, R.drawable.h7,
-            R.drawable.h11, R.drawable.h8,
-            R.drawable.h1, R.drawable.h9,
-            R.drawable.h3, R.drawable.h10,
-            R.drawable.h4, R.drawable.h11,
-            R.drawable.h5, R.drawable.h12,
-            R.drawable.h6, R.drawable.h2,
-            R.drawable.h7, R.drawable.h1,
-            R.drawable.h8, R.drawable.h11
-    };
+    private void createNewPicassoImages(boolean randomly){
+        final ArrayList<String> emptyComments=new ArrayList<String>();;
+        db.clearPicasso();
+        mPicArray.clear();
+        //Sets up the PicassoImage ArrayList here
+        if (randomly==false) {
+            for (int i = 0; i < picNumber; i++) {
+
+                PicassoImage newPic = new PicassoImage(i, mThumbIds[i], mTexts[i], false, emptyComments, "Matt");
+                mPicArray.add(newPic);
+                db.addPicassoImage(newPic);
+            }
+        }
+        else {
+            Random rn = new Random();
+
+            int count = 0;
+            ArrayList<Integer> possibleNumbers=new ArrayList<Integer>();
+            //int possibleNumbers[]=new int[picNumber];
+            for (int k=0; k<picNumber; k++){
+                possibleNumbers.add(k);
+            }
+            while (count<picNumber) {
+                int i = rn.nextInt(possibleNumbers.size());
+                int moo=possibleNumbers.get(i);
+                possibleNumbers.remove(i);
+                PicassoImage newPic = new PicassoImage(count, mThumbIds[moo], mTexts[moo], false, emptyComments,"Matt");
+                mPicArray.add(newPic);
+                db.addPicassoImage(newPic);
+                count++;
+            }
+        }
+        c.notifyDataSetChanged();
+    }
+    private void loadArrayListFromDatabase(){
+        for(int i=0;i<(picNumber);i++) {
+            PicassoImage oldPic = db.getPicassoImage(i);
+            mPicArray.add(oldPic);
+        }
+    }
 }

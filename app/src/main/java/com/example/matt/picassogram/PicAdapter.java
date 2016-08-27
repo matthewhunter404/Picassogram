@@ -10,20 +10,24 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 /**
  * Created by matt on 2016/07/13.
  */
-public class PicAdapter extends BaseAdapter {
+public class PicAdapter extends ArrayAdapter {
         private Context mContext;
-        private Integer[] mThumbIds;
+        private ArrayList<PicassoImage> mPicArray;
 
-        public PicAdapter(Context c, Integer[] passedThumbIds) {
+        public PicAdapter(Context c, int textViewResourceId, ArrayList<PicassoImage> passedThumbIds) {
+            super(c, textViewResourceId, passedThumbIds);
+            this.mPicArray = passedThumbIds;
             mContext = c;
-            mThumbIds=passedThumbIds;
+            mPicArray=passedThumbIds;
         }
 
         public int getCount() {
-            return mThumbIds.length;
+            return mPicArray.size();
         }
 
         public Object getItem(int position) {
@@ -47,7 +51,7 @@ public class PicAdapter extends BaseAdapter {
                 imageView = (ImageView) convertView;
             }
             Picasso.with(mContext)
-                    .load(mThumbIds[position])
+                    .load(mPicArray.get(position).getImage())
                     .resize(360, 360)
                     .centerCrop()
                     .placeholder(R.drawable.blurry) // optional
