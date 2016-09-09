@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DatabaseHandler db;
     private PicAdapter mPicassoGridApadter;
     private int mPicNumber=56;
+    private int mNumOfColumns=4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +41,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         //int displayHeight = displaymetrics.heightPixels;
         int displayWidth = displaymetrics.widthPixels;
-        mPicassoGridApadter=new PicAdapter(this, R.layout.gridpic_layout, mPicArray,displayWidth,4); //Sets the Gridview to have 4 columns
+        gridview.setColumnWidth(displayWidth/mNumOfColumns);
+        mPicassoGridApadter=new PicAdapter(this, R.layout.gridpic_layout, mPicArray,displayWidth,mNumOfColumns); //Sets the Gridview to have 4 columns
         gridview.setAdapter(mPicassoGridApadter);
 
         db = new DatabaseHandler(this);
