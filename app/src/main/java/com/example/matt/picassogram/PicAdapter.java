@@ -18,12 +18,14 @@ import java.util.ArrayList;
 public class PicAdapter extends ArrayAdapter {
         private Context mContext;
         private ArrayList<PicassoImage> mPicArray;
+        private int mImageWidth=1; //initialized to one for no real reason, just in case for some reason PicAdapter isn't initialized properly
 
-        public PicAdapter(Context c, int textViewResourceId, ArrayList<PicassoImage> passedThumbIds) {
+        public PicAdapter(Context c, int textViewResourceId, ArrayList<PicassoImage> passedThumbIds,int passedViewWidth,int passedNumberOfColumns) {
             super(c, textViewResourceId, passedThumbIds);
             this.mPicArray = passedThumbIds;
             mContext = c;
             mPicArray=passedThumbIds;
+            mImageWidth=passedViewWidth/passedNumberOfColumns;
         }
 
         public int getCount() {
@@ -44,7 +46,7 @@ public class PicAdapter extends ArrayAdapter {
             if (convertView == null) {
                 // if it's not recycled, initialize some attributes
                 imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams(360,360)); //These two ints convert directly to pixel values. This is bad but works for now.
+                imageView.setLayoutParams(new GridView.LayoutParams(mImageWidth,mImageWidth));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(0, 0, 0, 0);
             } else {
@@ -52,7 +54,7 @@ public class PicAdapter extends ArrayAdapter {
             }
             Picasso.with(mContext)
                     .load(mPicArray.get(position).getImage())
-                    .resize(360, 360)
+                    .resize(mImageWidth, mImageWidth)
                     .centerCrop()
                     .placeholder(R.drawable.blurry) // optional
                     .error(R.drawable.ic_placeholder)         // optional

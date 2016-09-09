@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -26,22 +27,25 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private ArrayList<PicassoImage> mPicArray=new ArrayList<PicassoImage>();
     private DatabaseHandler db;
-    private PicAdapter c;
-    private int picNumber=56;
+    private PicAdapter mPicassoGridApadter;
+    private int mPicNumber=56;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         GridView gridview = (GridView) findViewById(R.id.gridview);
-        c=new PicAdapter(this, R.layout.gridpic_layout, mPicArray);
-        gridview.setAdapter(c);
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        //int displayHeight = displaymetrics.heightPixels;
+        int displayWidth = displaymetrics.widthPixels;
+        mPicassoGridApadter=new PicAdapter(this, R.layout.gridpic_layout, mPicArray,displayWidth,4); //Sets the Gridview to have 4 columns
+        gridview.setAdapter(mPicassoGridApadter);
 
         db = new DatabaseHandler(this);
         Log.d("PicassoCount",String.valueOf(db.getPicassoCount()));
-        if(db.getPicassoCount()<picNumber){
+        if(db.getPicassoCount()<mPicNumber){
             createNewPicassoImages(true);
         }
         else {
@@ -210,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mPicArray.clear();
         //Sets up the PicassoImage ArrayList here
         if (randomly==false) {
-            for (int i = 0; i < picNumber; i++) {
+            for (int i = 0; i < mPicNumber; i++) {
 
                 PicassoImage newPic = new PicassoImage(i, mThumbIds[i], mTexts[i], false, emptyComments, "Matt");
                 mPicArray.add(newPic);
@@ -223,10 +227,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             int count = 0;
             ArrayList<Integer> possibleNumbers=new ArrayList<Integer>();
             //int possibleNumbers[]=new int[picNumber];
-            for (int k=0; k<picNumber; k++){
+            for (int k=0; k<mPicNumber; k++){
                 possibleNumbers.add(k);
             }
-            while (count<picNumber) {
+            while (count<mPicNumber) {
                 int i = rn.nextInt(possibleNumbers.size());
                 int moo=possibleNumbers.get(i);
                 possibleNumbers.remove(i);
@@ -236,10 +240,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 count++;
             }
         }
-        c.notifyDataSetChanged();
+        mPicassoGridApadter.notifyDataSetChanged();
     }
     private void loadArrayListFromDatabase(){
-        for(int i=0;i<(picNumber);i++) {
+        for(int i=0;i<(mPicNumber);i++) {
             PicassoImage oldPic = db.getPicassoImage(i);
             mPicArray.add(oldPic);
         }
