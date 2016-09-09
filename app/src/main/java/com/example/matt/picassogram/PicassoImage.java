@@ -5,6 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by matt on 2016/07/15.
  */
+//This object represents one image item in the app and its associated properties
 public class PicassoImage {
     private int UniqueID;
     private Integer imageID;

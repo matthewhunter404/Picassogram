@@ -26,6 +26,8 @@ import java.util.List;
 /**
  * Created by matt on 2016/07/13.
  */
+//The user will be taken to this activity when they select an image from the first main grid. This provides a zoomed in view of the image with a line of descriptive text,
+//the name of the owner and a comment section. Also a like, comment and share buttons.
 public class ImageActivity extends AppCompatActivity implements CommentFragment.OnListFragmentInteractionListener{
     Boolean PassedFav=true;
     PicassoImage picassoImage;

@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
-
+//This is the main activity of the app, and contains and sets up the main Gridview.
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private ArrayList<PicassoImage> mPicArray=new ArrayList<PicassoImage>();
     private DatabaseHandler db;
